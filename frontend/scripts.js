@@ -5,12 +5,22 @@ document.getElementById('upload-form').addEventListener('submit', async function
     const formData = new FormData();
     formData.append('file', fileInput.files[0]);
 
-    const response = await fetch('YOUR_BACKEND_URL/upload', {
-        method: 'POST',
-        body: formData
-    });
+    try {
+        const response = await fetch('YOUR_BACKEND_URL/upload', {
+            method: 'POST',
+            body: formData
+        });
 
-    const result = await response.json();
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+        
+    
     document.getElementById('summary').innerText = result.summary;
     document.getElementById('result').style.display = 'block';
+    } catch (error) {
+        console.log("Error: ", error);
+    }
 });
