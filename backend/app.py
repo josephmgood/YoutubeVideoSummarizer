@@ -1,20 +1,24 @@
-from flask import Flask, render_template
-import os
-import subprocess
+from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 
 
-backend_dir = os.path.dirname(os.path.abspath(__file__))
-template_dir = os.path.join(backend_dir, '../frontend/')
 
-app = Flask(__name__, template_folder=template_dir)
+app = Flask(__name__, static_folder='../static', template_folder='templates')
+CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins for all routes
 
-@app.get('/')
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-def home():
-    return render_template("index.html")
-
-def convert_video_to_audio
-
+@app.route('/process', methods=['POST'])
+def process_url():
+    if request.method == 'OPTIONS':
+        return '', 204
+    data = request.get_json()
+    url = data.get('url')
+    # Process the URL (e.g., download and transcribe video)
+    # Return a JSON response
+    return jsonify({"summary": "This is a dummy summary", "url": url})
 
 if __name__ == '__main__':
     app.run(debug=True)
